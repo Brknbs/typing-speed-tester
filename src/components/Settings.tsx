@@ -2,10 +2,12 @@ import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useTypingStore } from "../store/useTypingStore";
 import { TimeLimit } from "../types";
 import { generateParagraph } from "../utils/textGenerator";
+import { useNavigate } from "react-router-dom";
 
 const TIME_OPTIONS: TimeLimit[] = [30, 60, 120];
 
 export const Settings = () => {
+  const navigate = useNavigate();
   const {
     isActive,
     setTimeLimit,
@@ -17,10 +19,11 @@ export const Settings = () => {
     setNickname,
   } = useTypingStore();
 
-  const handleStart = () => {
+  const handleStart = async () => {
     resetGame();
-    setTargetText(generateParagraph());
+    setTargetText(await generateParagraph());
     startGame();
+    navigate("/test");
   };
 
   return (

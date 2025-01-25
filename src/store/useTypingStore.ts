@@ -25,7 +25,9 @@ const calculateWPM = (chars: number, timeElapsed: number) => {
 const getLastNickname = (): string => {
   try {
     const scores = JSON.parse(localStorage.getItem("scores") || "[]") as User[];
-    return scores.length > 0 ? scores[scores.length - 1].nickname : "";
+    const nickname =
+      scores.length > 0 ? scores[scores.length - 1].nickname : "";
+    return nickname === "unknown" ? "" : nickname;
   } catch {
     return "";
   }

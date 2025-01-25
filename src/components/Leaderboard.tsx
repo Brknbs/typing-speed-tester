@@ -1,5 +1,7 @@
 import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import { BsTrophy } from "react-icons/bs";
+import { FaMedal } from "react-icons/fa";
 import { TimeLimit, User } from "../types";
 
 const TIME_OPTIONS: TimeLimit[] = [30, 60, 120];
@@ -18,6 +20,19 @@ export const Leaderboard = () => {
       .slice(0, 10);
     setScores(filteredScores);
   }, [selectedTime]);
+
+  const getMedalIcon = (index: number) => {
+    switch (index) {
+      case 0:
+        return <BsTrophy size={20} color="#FFD700" />;
+      case 1:
+        return <FaMedal size={20} color="#C0C0C0" />;
+      case 2:
+        return <FaMedal size={20} color="#CD7F32" />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Box w="full" bg="gray.800" p="6" borderRadius="xl">
@@ -51,7 +66,7 @@ export const Leaderboard = () => {
                 color="gray.400"
                 fontWeight="medium"
               >
-                <Text flex="0 0 60px">Rank</Text>
+                <Text flex="0 0 80px">Rank</Text>
                 <Text flex="1">Nickname</Text>
                 <Text flex="0 0 100px" textAlign="right">
                   WPM
@@ -70,9 +85,10 @@ export const Leaderboard = () => {
                   transition="background 0.2s"
                   borderRadius="md"
                 >
-                  <Text flex="0 0 60px" color="gray.300">
-                    #{index + 1}
-                  </Text>
+                  <Flex flex="0 0 80px" align="center" gap="2">
+                    <Text color="gray.300">#{index + 1}</Text>
+                    {getMedalIcon(index)}
+                  </Flex>
                   <Text flex="1" color="gray.300">
                     {score.nickname}
                   </Text>

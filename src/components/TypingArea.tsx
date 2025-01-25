@@ -77,6 +77,8 @@ export const TypingArea = () => {
           ref={inputRef}
           value={currentInput}
           onChange={(e) => updateInput(e.target.value)}
+          onPaste={(e) => e.preventDefault()}
+          onCopy={(e) => e.preventDefault()}
           placeholder={isActive ? "Start typing..." : "Click start to begin"}
           size="lg"
           fontSize="lg"
