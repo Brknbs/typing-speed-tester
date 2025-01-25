@@ -16,9 +16,19 @@ interface TypingStore extends GameState {
 }
 
 const calculateWPM = (chars: number, timeElapsed: number) => {
+  if (timeElapsed === 0) return 0;
   const minutes = timeElapsed / 60;
   const words = chars / 5; // Standard: 5 characters = 1 word
   return Math.round(words / minutes);
+};
+
+const getLastNickname = (): string => {
+  try {
+    const scores = JSON.parse(localStorage.getItem("scores") || "[]") as User[];
+    return scores.length > 0 ? scores[scores.length - 1].nickname : "";
+  } catch {
+    return "";
+  }
 };
 
 const initialState: GameState & { nickname: string } = {
@@ -32,7 +42,7 @@ const initialState: GameState & { nickname: string } = {
   totalWords: 0,
   wpm: 0,
   accuracy: 100,
-  nickname: "",
+  nickname: getLastNickname(),
 };
 
 export const useTypingStore = create<TypingStore>((set, get) => ({
@@ -90,7 +100,7 @@ export const useTypingStore = create<TypingStore>((set, get) => ({
     const accuracy =
       totalChars > 0 ? Math.round((correct / totalChars) * 100) : 100;
     const timeElapsed = state.timeLimit - state.timeRemaining;
-    const wpm = timeElapsed > 0 ? calculateWPM(correct, timeElapsed / 60) : 0;
+    const wpm = calculateWPM(correct, timeElapsed);
 
     set({
       accuracy,
@@ -109,7 +119,7 @@ export const useTypingStore = create<TypingStore>((set, get) => ({
         ? Math.round((state.correctChars / totalChars) * 100)
         : 100;
     const timeElapsed = state.timeLimit - state.timeRemaining;
-    const wpm = calculateWPM(state.correctChars, timeElapsed / 60);
+    const wpm = calculateWPM(state.correctChars, timeElapsed);
 
     set({
       wpm,
@@ -126,7 +136,7 @@ export const useTypingStore = create<TypingStore>((set, get) => ({
   saveScore: () => {
     const state = get();
     const score: User = {
-      nickname: state.nickname,
+      nickname: state.nickname.trim() || "unknown",
       wpm: state.wpm,
       accuracy: state.accuracy,
       timeLimit: state.timeLimit,

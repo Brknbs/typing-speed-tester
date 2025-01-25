@@ -18,11 +18,9 @@ export const Settings = () => {
   } = useTypingStore();
 
   const handleStart = () => {
-    if (nickname.trim()) {
-      resetGame();
-      setTargetText(generateParagraph());
-      startGame();
-    }
+    resetGame();
+    setTargetText(generateParagraph());
+    startGame();
   };
 
   return (
@@ -36,7 +34,7 @@ export const Settings = () => {
             <Input
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              placeholder="Enter your nickname"
+              placeholder="Enter your nickname (optional)"
               size="lg"
               bg="gray.700"
               border="none"
@@ -81,7 +79,7 @@ export const Settings = () => {
             fontSize="lg"
             py="8"
             onClick={handleStart}
-            disabled={isActive || !nickname.trim()}
+            disabled={isActive}
           >
             Start Test
           </Button>
