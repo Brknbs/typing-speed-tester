@@ -1,4 +1,4 @@
-import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Leaderboard } from "../components/Leaderboard";
 
